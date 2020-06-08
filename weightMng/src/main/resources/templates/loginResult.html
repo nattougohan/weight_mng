@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>体重管理</title>
+	<style>
+	h1 { font-size:18pt; font-weight:bold; color:gray; }
+	body { font-size:13pt; color:gray; margin:5px 25px; }
+	pre { font-size:13pt; color:gray; padding:5px 10px; border:1px solid gray; }
+	</style>
+</head>
+<body>
+	<h1 th:inline="text">[[${user}]]さん、ようこそ</h1>
+	<div th:inline="text">基本情報</div>
+	<div th:inline="text">年齢：[[${age}]]才</div>
+	<div th:inline="text">性別：[[${sex}]]</div>
+	<div th:inline="text">身長：[[${height}]]cm</div>
+	<p><a th:href="@{'/index/'}">ログアウト</a></p>
+</body>
+</html>
