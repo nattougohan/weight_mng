@@ -1,8 +1,6 @@
 package com.practice.weightMng.app.controller;
 
-/*
- * Configで認証の設定は行うため、当クラスは不要となる予定
- */
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,16 +22,8 @@ public class LoginController {
 //	public ModelAndView loginJudge(@RequestParam Integer id, @RequestParam String password) {
 //		ModelAndView mav = new ModelAndView();
 //		User user = repository.getOne(id);
-//		
-//		if(password.equals(user.getPassword())) { // ここでエラーになってる
-//			mav.addObject(user);
-//			mav.setViewName("loginResult");
-//		}else {
-//			mav.setViewName("index/?error=true");
-//		}
-//
-//		
-//		// ログイン情報がDBに登録されているユーザーと合致すればログイン成功画面を表示
+//		mav.addObject("user", user);
+//		mav.setViewName("loginResult");
 //		return mav; 
 //	}
 

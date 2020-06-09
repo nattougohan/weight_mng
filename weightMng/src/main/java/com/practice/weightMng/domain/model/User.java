@@ -17,7 +17,7 @@ public class User {
     @Column(name="height")
     private double height;
     @Column(name="sex")
-    private char sex;
+    private String sex;
     @Column(name="password")
     private String password;
 
@@ -59,11 +59,11 @@ public class User {
         this.height = height;
     }
 
-    public char getSex() {
+    public String getSex() {
         return sex;
     }
 
-    public void setSex(char sex) {
+    public void setSex(String sex) {
         this.sex = sex;
     }
 

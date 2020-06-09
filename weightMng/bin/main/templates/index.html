@@ -12,11 +12,10 @@
 <body>
 	<h1>体重管理をしましょう</h1>
 	<div th:if="${param.error}">ID・パスワードが間違っているようです</div>
-	<form method="post" th:action="@{/index}"> <!-- loginResultに飛ばない。。。 -->
-		<div><label>ユーザーID：<input type="text" name="username" /></label></div>
-		<div><label>パスワード：<input type="password" name="password" /></label></div>
+	<form method="get" th:action="@{/loginResult}">
+		<div><label>ユーザーID：<input type="number" name="id" /></label></div>
 		<div><input type="submit" value="ログイン" /></div>
 	</form>
-	<p><a th:href="@{'/userRegist/'}">新規登録</a></p>
+	<!-- <p><a th:href="@{'/userRegist/'}">新規登録</a></p> -->
 </body>
 </html>
