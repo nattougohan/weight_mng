@@ -10,12 +10,20 @@
 	</style>
 </head>
 <body>
-	<h1 th:inline="text">[[${user}]]さん、ようこそ</h1>
+	<div th:object="${session.user}">
+		<h1 th:text="*{nickname} + さん、ようこそ"></h1>
+		<h2>基本情報</h2>
+		<div th:inline="text">年齢：[[${age}]]才</div>
+		<div th:inline="text">性別：[[${sex}]]</div>
+		<div th:inline="text">身長：[[${height}]]cm</div>
+	</div>
+	<!-- <h1 th:inline="text">[[${nickname}]]さん、ようこそ</h1>
 	<div th:inline="text">基本情報</div>
 	<div th:inline="text">年齢：[[${age}]]才</div>
 	<div th:inline="text">性別：[[${sex}]]</div>
-	<div th:inline="text">身長：[[${height}]]cm</div>
+	<div th:inline="text">身長：[[${height}]]cm</div> -->
 	
-	<p><a th:href="@{'/'}">ログアウト</a></p>
+	<p><a th:href="@{'/weightRecord'}">体重を記録する</a></p>
+	<p><a th:href="@{'/'}">TOPへ</a></p>
 </body>
 </html>

@@ -13,8 +13,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.practice.weightMng.domain.model.User;
 import com.practice.weightMng.domain.repository.UserRepository;
 
-// 入力された体重と登録されている身長を基にBMIを算出する。ついでに性別・年齢からの適性度を表示する
-
+/**
+ *  入力された体重と登録されている身長を基にBMIを算出する。ついでに性別・年齢からの適性度を表示する
+ */
 @Controller
 public class WeightToBMIController {
 	
@@ -22,40 +23,9 @@ public class WeightToBMIController {
 	UserRepository repository;
 	
 	
-	@RequestMapping(value="/", method=RequestMethod.GET)
-	public ModelAndView index(ModelAndView mav) {
-		mav.setViewName("index");
-		return mav;
-	}
+
 	
-	@RequestMapping(value="/loginResult", method=RequestMethod.GET)
-	public ModelAndView loginResult(@RequestParam("id") Integer id, ModelAndView mav) {
-		// DBからユーザー情報をとってきて、表示させる
-//		String username = httpServletRequest.getRemoteUser();
-		User user = repository.getOne(id);
-		String sex = "";
-		
-		// 誕生日から現在の年齢を算出
-		LocalDate birthday = LocalDate.parse(user.getBirthday());
-		LocalDate currentDate = LocalDate.now();
-		int age = (int) ChronoUnit.YEARS.between(birthday, currentDate);
-		
-		// 性別を判定
-		if("0".equals(user.getSex())) {
-			sex = "男性";
-		} else if("1".equals(user.getSex())) {
-			sex = "女性";
-		} else {
-			sex = "その他";
-		}
-		
-		mav.addObject("user", user.getNickname());
-		mav.addObject("age", age);
-		mav.addObject("sex", sex);
-		mav.addObject("height", user.getHeight());
-		mav.setViewName("loginResult");
-		return mav;
-	}
+
 //	
 //	@RequestMapping("/home")
 //	public String home() {

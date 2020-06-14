@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>体重管理</title>
+	<style>
+	h1 { font-size:18pt; font-weight:bold; color:gray; }
+	body { font-size:13pt; color:gray; margin:5px 25px; }
+	pre { font-size:13pt; color:gray; padding:5px 10px; border:1px solid gray; }
+	</style>
+</head>
+<body>
+	<div th:object="${session.user}">
+		<h1 th:text="*{nickname} + さんの体重を記録しましょう"></h1>
+	</div>
+	<form method="post" th:action="@{/weightRecordResult}">
+		<div><label>体重：<input type="text" name="weight" /></label></div>
+		<div><label>日付：<input type="date" name="date" /></label></div>
+		<div><input type="submit" value="記録" /></div>
+	</form>
+	
+	<p><a th:href="@{'/loginResult'}">前のページに戻る</a></p>
+	<p><a th:href="@{'/'}">TOPへ</a></p>
+</body>
+</html>

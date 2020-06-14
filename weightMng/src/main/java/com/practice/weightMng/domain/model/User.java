@@ -1,11 +1,17 @@
 package com.practice.weightMng.domain.model;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "USER")
-public class User {
-    @Id
+public class User implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
     @Column(name="userid")
