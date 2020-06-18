@@ -4,22 +4,22 @@ package com.practice.weightMng.domain.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "WEIGHTHISTORY")
+@Table(name = "weighthistory")
 public class WeightHistory {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer seq;
 
     @Column(name="id")
-    private Integer id;
+    private int id;
 
     @Column(name="weight")
-    private Double weight;
+    private double weight;
 
     @Column(name="bmi")
-    private Double bmi;
+    private double bmi;
 
-    @Column(name="measuredDay")
+    @Column(name="measured_day")
     private String measuredDay;
 
     public Integer getSeq() {
@@ -30,27 +30,27 @@ public class WeightHistory {
         this.seq = seq;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Double getWeight() {
+    public double getWeight() {
         return weight;
     }
 
-    public void setWeight(Double weight) {
+    public void setWeight(double weight) {
         this.weight = weight;
     }
 
-    public Double getBmi() {
+    public double getBmi() {
         return bmi;
     }
 
-    public void setBmi(Double bmi) {
+    public void setBmi(double bmi) {
         this.bmi = bmi;
     }
 

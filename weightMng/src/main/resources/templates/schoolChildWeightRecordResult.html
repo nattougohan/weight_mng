@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>体重管理</title>
+	<style>
+	h1 { font-size:18pt; font-weight:bold; color:gray; }
+	body { font-size:13pt; color:gray; margin:5px 25px; }
+	pre { font-size:13pt; color:gray; padding:5px 10px; border:1px solid gray; }
+	</style>
+</head>
+<body>
+	<h1>登録の結果は・・・？</h1>
+
+	<div th:object="${session.user}">
+		<p><span th:inline="text">[[${measuredDay}]]の</span><span th:text="*{nickname} + さんの体重は、"></span></p>
+		<div th:inline="text">体重：[[${weight}]]kgでした</div>
+		<div th:inline="text">ローレル指数は[[${index}]]です</div>
+		<div th:inline="text">判定基準では、[[${judge}]]</div>
+	</div>
+	
+	<p><a th:href="@{'/weightRecord'}">続けて記録する</a></p>
+	<p><a th:href="@{'/showGraph'}">グラフを表示する</a></p>
+	<p><a th:href="@{'/'}">TOPへ</a></p>
+</body>
+</html>

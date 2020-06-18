@@ -14,7 +14,7 @@
 		<h1 th:text="*{nickname} + さんの体重を記録しましょう"></h1>
 	</div>
 	<form method="post" th:action="@{/weightRecordResult}">
-		<div><label>体重：<input type="text" name="weight" /></label></div>
+		<div><label>体重：<input type="number" step="0.1" name="weight" /></label></div>
 		<div><label>日付：<input type="date" name="date" /></label></div>
 		<div><input type="submit" value="記録" /></div>
 	</form>

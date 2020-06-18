@@ -1,17 +1,20 @@
 package com.practice.weightMng.app.controller;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.practice.weightMng.app.utility.Utility;
 import com.practice.weightMng.domain.model.User;
-import com.practice.weightMng.domain.repository.UserRepository;
+import com.practice.weightMng.domain.model.WeightHistory;
+import com.practice.weightMng.domain.repository.WeightHistoryRepository;
 
 /**
  *  入力された体重と登録されている身長を基にBMIを算出する。ついでに性別・年齢からの適性度を表示する
@@ -20,47 +23,66 @@ import com.practice.weightMng.domain.repository.UserRepository;
 public class WeightToBMIController {
 	
 	@Autowired
-	UserRepository repository;
+	WeightHistoryRepository repository;
 	
-	
+	@Autowired
+	HttpSession session;
 
-	
+	/**
+	 * weightRecord.htmlから体重と計測日を入力して登録されたときに実行されるメソッド
+	 * @param weight 体重
+	 * @param date 計測日
+	 * @param mav
+	 * @return
+	 */
+	@RequestMapping(value="/weightRecordResult", method=RequestMethod.POST)
+	public ModelAndView weightRecordResult(@RequestParam("weight") double weight, @RequestParam("date") String date, ModelAndView mav) {
+		double index = 0.0;
+		String judge = "";
+		
+		// sessionのユーザー情報を取得
+		User user = (User) session.getAttribute("user");
+		
+		// 登録日付表示の整形
+		String measuredDay = new String(Utility.dateJapaneseNotation(date));
+		
+		// ユーザーの現在の年齢を算出
+		int age = Utility.calculateAge(user.getBirthday());
+		
+		// 年齢によって、計算する指数を分岐する
+		if(age >=0 && age < 6) {
+			// 幼児ならカウプ指数の計算
+			// TODO babyWeightRecordResult.htmlの一覧表を追加すること
+			index = Utility.calculateKaupIndex(weight, user.getHeight());
+			mav.setViewName("babyWeightRecordResult");
+		} else if(age >= 6 && age < 16) {
+			// 学童ならローレル指数の計算
+			index = Utility.calculateRohrerIndex(weight, user.getHeight());
+			judge = Utility.schoolChildObesity(index);
+			mav.setViewName("schoolChildWeightRecordResult");
+		} else if(age >= 16) {
+			// 成人ならBMIの計算
+			index = Utility.calculateBMI(weight, user.getHeight());
+			judge = Utility.adultObesity(index);
+		}
+		
+		
+		// DBへ登録するインスタンス生成
+		WeightHistory weightRec = new WeightHistory();
+		weightRec.setId(user.getId());
+		weightRec.setWeight(weight);
+		weightRec.setBmi(index);
+		weightRec.setMeasuredDay(date);
+		
+		// DBへ登録する
+		repository.save(weightRec);
+		
+		// 登録結果画面で使用する各種情報を格納
+		mav.addObject("measuredDay", measuredDay);
+		mav.addObject("weight", weight);
+		mav.addObject("index", index);
+		mav.addObject("judge", judge);
 
-//	
-//	@RequestMapping("/home")
-//	public String home() {
-//		return "forward:/";
-//	}
-//	
-
-//	
-//	@RequestMapping(value="/", method=RequestMethod.POST)
-//	public ModelAndView send(
-//		@RequestParam(value="check1", required=false)boolean check1,
-//		@RequestParam(value="radio1", required=false)String radio1,
-//		@RequestParam(value="select1", required=false)String select1,
-//		@RequestParam(value="select2", required=false)String[] select2,
-//		ModelAndView mav) {
-//		
-//		String res = "";
-//		try {
-//			res = "check:" + check1 +
-//				  " radio:" + radio1 +
-//				  " select:" + select1 +
-//				  "\nselect2:";
-//		} catch (NullPointerException e) {
-//			e.printStackTrace();
-//		}
-//		try {
-//			res += select2[0];
-//			for(int i = 1; i < select2.length; i++) {
-//				res += ", " + select2[i];
-//			}
-//		} catch (NullPointerException e) {
-//			res += "null";
-//		}
-//		mav.addObject("msg", res);
-//		mav.setViewName("index");
-//		return mav;
-//	}
+		return mav;
+	}
 }

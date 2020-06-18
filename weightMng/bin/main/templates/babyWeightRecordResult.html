@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>体重管理</title>
+	<style>
+	h1 { font-size:18pt; font-weight:bold; color:gray; }
+	body { font-size:13pt; color:gray; margin:5px 25px; }
+	pre { font-size:13pt; color:gray; padding:5px 10px; border:1px solid gray; }
+	</style>
+</head>
+<body>
+	<h1>登録の結果は・・・？</h1>
+
+	<div th:object="${session.user}">
+		<p><span th:inline="text">[[${measuredDay}]]の</span><span th:text="*{nickname} + ちゃんの体重は、"></span></p>
+		<div th:inline="text">体重：[[${weight}]]kgでした</div>
+		<div th:inline="text">カウプ指数は[[${index}]]です</div><br>
+		<table border="1">
+			<tr>
+				<th>年齢</th>
+				<th>判定（正常値範囲）</th>
+			<tr>
+				<td>3ヶ月〜1歳未満</td>
+				<td>16〜18未満</td>
+			</tr>
+			<tr>
+				<td>1歳〜1歳6ヶ月未満</td>
+				<td>15.5〜17.5未満</td>
+			</tr>
+			<tr>
+				<td>1歳6ヶ月〜3歳未満</td>
+				<td>15〜17未満</td>
+			</tr>
+			<tr>
+				<td>3歳〜5歳まで</td>
+				<td>14.5〜16.5未満</td>
+			</tr>			
+		</table>
+		<div>※上記の正常値より少なければ「やせぎみ」、多ければ「ふとりぎみ」</div>
+		<div>※生後3ヶ月未満の乳児には当てはまらないので注意</div>
+	</div>
+	
+	<p><a th:href="@{'/weightRecord'}">続けて記録する</a></p>
+	<p><a th:href="@{'/showGraph'}">グラフを表示する</a></p>
+	<p><a th:href="@{'/'}">TOPへ</a></p>
+</body>
+</html>
