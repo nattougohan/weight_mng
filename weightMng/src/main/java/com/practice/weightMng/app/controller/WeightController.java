@@ -2,6 +2,10 @@ package com.practice.weightMng.app.controller;
 
 
 
+import java.util.List;
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +24,16 @@ import com.practice.weightMng.domain.repository.WeightHistoryRepository;
  *  入力された体重と登録されている身長を基にBMIを算出する。ついでに性別・年齢からの適性度を表示する
  */
 @Controller
-public class WeightToBMIController {
+public class WeightController {
 	
 	@Autowired
 	WeightHistoryRepository repository;
 	
 	@Autowired
 	HttpSession session;
+	
+	@Autowired
+	HttpServletRequest request;
 
 	/**
 	 * weightRecord.htmlから体重と計測日を入力して登録されたときに実行されるメソッド
@@ -83,6 +90,16 @@ public class WeightToBMIController {
 		mav.addObject("index", index);
 		mav.addObject("judge", judge);
 
+		return mav;
+	}
+	
+	@RequestMapping(value="/showChart", method=RequestMethod.GET)
+	public ModelAndView showChart(ModelAndView mav) {
+		// sessionのユーザー情報を取得
+		User user = (User) session.getAttribute("user");
+		// 対象ユーザーの記録された体重を取得
+		List<WeightHistory> userRecordList = repository.findByUserId(user.getId());
+		mav.addObject("userRecordList", userRecordList);
 		return mav;
 	}
 }
