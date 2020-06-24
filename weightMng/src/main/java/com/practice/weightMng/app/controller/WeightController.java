@@ -94,12 +94,21 @@ public class WeightController {
 	}
 	
 	@RequestMapping(value="/showChart", method=RequestMethod.GET)
-	public ModelAndView showChart(ModelAndView mav) {
+	public ModelAndView showChart(ModelAndView mav) { 
+		
 		// sessionのユーザー情報を取得
 		User user = (User) session.getAttribute("user");
 		// 対象ユーザーの記録された体重を取得
 		List<WeightHistory> userRecordList = repository.findByUserId(user.getId());
-		mav.addObject("userRecordList", userRecordList);
+		String[] measuredDays =new String[userRecordList.size()];
+		double[] weights = new double[userRecordList.size()];
+		
+		for(int i = 0; i > userRecordList.size(); i++) {
+			measuredDays[i] = userRecordList.get(i).getMeasuredDay();
+			weights[i] = userRecordList.get(i).getWeight();
+		}
+		mav.addObject("measuredDays", measuredDays);
+		mav.addObject("weights", weights);
 		return mav;
 	}
 }

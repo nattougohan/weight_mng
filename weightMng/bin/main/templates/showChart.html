@@ -12,48 +12,39 @@
 <body>
 	<h1>体重の推移</h1>
 
+	
 	<canvas id="weightChart"></canvas>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
-	<!-- <script src="/Users/NakanoRyo/.anyenv/envs/nodenv/node_modules/chart.js/Chart.js"></script> -->
-	
-	
-	<script>
-	var ctx = document.getElementById("weightChart");
-	var weightChart = new Chart(ctx, {
-		type: 'line',
-		data: {
-			labels: ['8月1日', '8月2日', '8月3日', '8月4日', '8月5日', '8月6日', '8月7日'],
-			datasets: [
-				{
-					label: '体重(kg）',
-					data: [35, 34, 37, 35, 34, 35, 34, 25],
-					borderColor: "rgba(255,0,0,1)",
-					backgroundColor: "rgba(0,0,0,0)"
-				},
-			],
-		},
-		options: {
-			title: {
-				display: true,
-				text: '体重推移'
-			},
-			scales: {
-				yAxes: [{
-					ticks: {
-						suggestedMax: 40,
-						suggestedMin: 0,
-						stepSize: 10,
-						callback: function(value, index, values){
-						return  value +  '度'
-						}
-					}
-				}]
-			},
-		}
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+	 <script th:inline="javascript" >
+	 /*<![CDATA[*/
+	 var ctx = document.getElementById('weightChart').getContext('2d');
+	 var chart = new Chart(ctx, {
+	     type: 'line',
+	     
+	     // データを指定
+	     data: {
+	    	 labels: /*[[${measuredDays}]]*/,
+	         datasets: [{
+	             label: '体重',
+	             borderColor: 'rgb(75, 192, 192)',
+	             fill: false,
+	             data: /*[[ ${weights} ]]*/
+	         }]
+	     },
+	 
+	     // 設定はoptionsに記述
+	     options: {
+	       //タイトル
+	       title: {
+	         display: true,
+	         text: '線グラフの例'
+	       }
+	     }
 	});
+	 /*]]>*/
 	</script>
 	
-	<!-- measuredDayの照準でid単位で取得できた。あとは上のチャートに体重と計測日を順番に入れればOK  -->
+	<!-- measuredDayの昇順でid単位で取得できた。あとは上のチャートに体重と計測日を順番に入れればOK  -->
 	<div th:each="userRecord : ${userRecordList}">
 		<div th:text="${userRecord.seq}"></div>
 		<div th:text="${userRecord.id}"></div>
