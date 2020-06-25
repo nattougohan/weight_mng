@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,7 +60,6 @@ public class WeightController {
 		// 年齢によって、計算する指数を分岐する
 		if(age >=0 && age < 6) {
 			// 幼児ならカウプ指数の計算
-			// TODO babyWeightRecordResult.htmlの一覧表を追加すること
 			index = Utility.calculateKaupIndex(weight, user.getHeight());
 			mav.setViewName("babyWeightRecordResult");
 		} else if(age >= 6 && age < 16) {
@@ -94,21 +94,22 @@ public class WeightController {
 	}
 	
 	@RequestMapping(value="/showChart", method=RequestMethod.GET)
-	public ModelAndView showChart(ModelAndView mav) { 
+	public String showChart(Model model) { 
 		
 		// sessionのユーザー情報を取得
 		User user = (User) session.getAttribute("user");
 		// 対象ユーザーの記録された体重を取得
 		List<WeightHistory> userRecordList = repository.findByUserId(user.getId());
-		String[] measuredDays =new String[userRecordList.size()];
+		String[] measuredDays = new String[userRecordList.size()];
 		double[] weights = new double[userRecordList.size()];
 		
-		for(int i = 0; i > userRecordList.size(); i++) {
+		for(int i = 0; i < userRecordList.size(); i++) {
 			measuredDays[i] = userRecordList.get(i).getMeasuredDay();
 			weights[i] = userRecordList.get(i).getWeight();
 		}
-		mav.addObject("measuredDays", measuredDays);
-		mav.addObject("weights", weights);
-		return mav;
+		
+		model.addAttribute("measuredDays", measuredDays);
+		model.addAttribute("weights", weights);
+		return "showChart";
 	}
 }

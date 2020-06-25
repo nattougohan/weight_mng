@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 	<title>体重管理</title>
 	<style>
 	h1 { font-size:18pt; font-weight:bold; color:gray; }
@@ -10,47 +11,37 @@
 	</style>
 </head>
 <body>
-	<h1>体重の推移</h1>
 
-	
-	<canvas id="weightChart"></canvas>
-	 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
-	 <script th:inline="javascript" >
-	 /*<![CDATA[*/
-	 var ctx = document.getElementById('weightChart').getContext('2d');
-	 var chart = new Chart(ctx, {
-	     type: 'line',
-	     
-	     // データを指定
-	     data: {
-	    	 labels: /*[[${measuredDays}]]*/,
-	         datasets: [{
-	             label: '体重',
-	             borderColor: 'rgb(75, 192, 192)',
-	             fill: false,
-	             data: /*[[ ${weights} ]]*/
-	         }]
-	     },
-	 
-	     // 設定はoptionsに記述
-	     options: {
-	       //タイトル
-	       title: {
-	         display: true,
-	         text: '線グラフの例'
-	       }
-	     }
-	});
-	 /*]]>*/
-	</script>
-	
-	<!-- measuredDayの昇順でid単位で取得できた。あとは上のチャートに体重と計測日を順番に入れればOK  -->
-	<div th:each="userRecord : ${userRecordList}">
-		<div th:text="${userRecord.seq}"></div>
-		<div th:text="${userRecord.id}"></div>
-		<div th:text="${userRecord.weight}"></div>
-		<div th:text="${userRecord.measuredDay}"></div>
+	<div th:object="${session.user}">
+	<h1 th:text="*{nickname} + さんの体重の推移"></h1>
 	</div>
+	
+    <canvas id="weightChart" style="position: relative; height:300; width:400"></canvas>
+    <script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    var ctx = document.getElementById("weightChart").getContext('2d');
+    var ChartDemo = new Chart(ctx, {
+        type: 'line',
+        data: {
+            // コントローラーで格納したmeasuredDaysを変数式で取り出すだけ。
+            labels: /*[[ ${measuredDays} ]]*/,
+            datasets: [
+                {
+                    label: "体重",
+                    borderColor: 'rgb(255, 0, 0)',
+                    lineTension: 0,
+                    fill: false,
+                    // 上記と同様、weightsを変数式で取り出しているだけです。
+                    data: /*[[ ${weights} ]]*/,
+                },
+            ]
+        },
+        options: {
+            responsive: true,
+        }
+    });
+    /*]]>*/
+    </script>
 	
 	<p><a th:href="@{'/weightRecord'}">体重を記録する</a></p>
 	<p><a th:href="@{'/'}">TOPへ</a></p>
